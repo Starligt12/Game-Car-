@@ -1,0 +1,45 @@
+public class Health : MonoBehaviour
+{
+    public int curHealth = 0;
+    public int maxHealth = 100;
+    
+    public HealthBar healthBar;
+    
+
+    private void Start()
+    {
+        curHealth = maxHealth;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Enemy") 
+        {
+            curHealth -= 20;
+            DamagePlayer(20);
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "GameOver")
+        {
+            curHealth -= 30;
+            DamagePlayer(30);
+        }
+    }
+    private void Update()
+    {
+            if(curHealth <= 0) 
+            { 
+                Destroy(gameObject);
+                FindObjectOfType<GameManager>().EndGame();
+                
+                
+            }
+    }
+    public void DamagePlayer(int damage) 
+    {
+        curHealth -= damage;
+        healthBar.SetHealth(curHealth);
+    }
+}
